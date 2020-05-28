@@ -6,13 +6,16 @@
     <link rel="shortcut icon" href="#" /> <!--Suppress favicon-->
     <title>Web components</title>
     <script type="module" src="public/js/counter.js"></script>
+    <script type="module" src="public/js/table.js"></script>
 </head>
 
 <body>
    <counter-element id="someid" count="5" color="green">Slot content 3</counter-element>
    <counter-element id="someid2" count=6" color="red">Slot content 3</counter-element>
+   <table-element id="table"></table-element>
 </body>
 <script>
   document.getElementById("someid").addEventListener('count-changed', e => console.log(e.detail));
+  document.getElementById("table").data = [{"a": "aaaaa", "b": "bbbbb"}];
 </script>
 </html>

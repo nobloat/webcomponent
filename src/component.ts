@@ -1,5 +1,4 @@
 export abstract class WebComponent extends HTMLElement {
-
   static observedAttributes = [];
 
   connectedCallback() {
@@ -8,9 +7,13 @@ export abstract class WebComponent extends HTMLElement {
   }
 
   attributeChangedCallback(name, o,n) {
+    console.log("Attribute changed: " + name);
     let item = this.$(name);
     if (item != null) {
       item.innerText = n;
+    } else if (this.shadowRoot != null) {
+      console.log("Default render all");
+      this.r();
     }
     this.dispatch(name+"-changed", n);
   }
@@ -18,24 +21,25 @@ export abstract class WebComponent extends HTMLElement {
   r() {
     if (this.shadowRoot != null) {
       this.shadowRoot.innerHTML = this.t();
-      let style = document.createElement("style");
-      style.innerHTML = this.css();
-
-      this.shadowRoot.appendChild(style);
+      if (this.css() != "") {
+        let style = document.createElement("style");
+        style.innerHTML = this.css();
+        this.shadowRoot.appendChild(style);
+      }
       this.b();
     }
   }
   
-
   dispatch(name: string, detail: any) {
     this.dispatchEvent(new CustomEvent(name, {bubbles: true, composed: true, detail: detail}));
   }
 
-  abstract b() : void
-  abstract css() : string
-  abstract t() : string
+  css() { return "" };
 
   $(name: string) {
     return this.shadowRoot?.getElementById(name);
   }
+
+  b() {}
+  abstract t() : string
 }
