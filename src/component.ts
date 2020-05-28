@@ -1,15 +1,7 @@
-export const Property = (t, p) => {
-  if (t.constructor.observedAttributes == null) {
-    t.constructor.observedAttributes = [];
-  }
-  t.constructor.observedAttributes.push(p);
-}
+export abstract class WebComponent extends HTMLElement {
 
-export function Register(tag: string, component) {
-  customElements.define(tag, component);
-}
+  static observedAttributes = [];
 
-export class WebComponent extends HTMLElement {
   connectedCallback() {
     this.attachShadow({mode: 'open'});
     this.r();
@@ -20,27 +12,30 @@ export class WebComponent extends HTMLElement {
     if (item != null) {
       item.innerText = n;
     }
-    this.dispatchEvent(new Event<string>(name+"-changed", n));
+    this.dispatch(name+"-changed", n);
   }
 
   r() {
     if (this.shadowRoot != null) {
       this.shadowRoot.innerHTML = this.t();
+      let style = document.createElement("style");
+      style.innerHTML = this.css();
+
+      this.shadowRoot.appendChild(style);
       this.b();
     }
   }
-  b() {
-    //Bind your elements hier
+  
+
+  dispatch(name: string, detail: any) {
+    this.dispatchEvent(new CustomEvent(name, {bubbles: true, composed: true, detail: detail}));
   }
-  t() : string {return ``;}
+
+  abstract b() : void
+  abstract css() : string
+  abstract t() : string
 
   $(name: string) {
     return this.shadowRoot?.getElementById(name);
-  }
-}
-
-export class Event<T> extends CustomEvent<T> {
-  constructor(name: string, detail: T) {
-    super(name, {bubbles: true, composed: true, detail: detail});
   }
 }

@@ -1,8 +1,9 @@
-import {Property, WebComponent, Register, Event} from "./component.js";
+import {WebComponent} from "./component.js";
 
 class CounterElement extends WebComponent {
 
-  @Property
+  static observedAttributes = ["count"];
+
   set count(count: number) {
     this.setAttribute('count', count.toString());
   }
@@ -25,7 +26,7 @@ class CounterElement extends WebComponent {
 
   css() {
     return `
-    button { margin: 2rem; }
+    button { margin: 2rem; background-color: green; }
     `
   }
 
@@ -34,4 +35,4 @@ class CounterElement extends WebComponent {
   }
 }
 
-Register("counter-element", CounterElement);
+customElements.define("counter-element", CounterElement);

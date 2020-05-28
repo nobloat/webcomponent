@@ -9,7 +9,8 @@
 </head>
 
 <body>
-   <counter-element id="someid" count="5">Slot content 3</counter-element>
+   <counter-element id="someid" count="5" color="green">Slot content 3</counter-element>
+   <counter-element id="someid2" count=6" color="red">Slot content 3</counter-element>
 </body>
 <script>
   document.getElementById("someid").addEventListener('count-changed', e => console.log(e.detail));
