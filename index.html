@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="#" /> <!--Suppress favicon-->
+    <title>Web components</title>
+    <script type="module" src="public/js/counter.js"></script>
+</head>
+
+<body>
+   <counter-element id="someid" count="5">Slot content 3</counter-element>
+</body>
+<script>
+  document.getElementById("someid").addEventListener('count-changed', e => console.log(e.detail));
+</script>
+</html>
